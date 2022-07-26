@@ -93,8 +93,8 @@ module vault::Vault{
         assert!(current_amount >= amount, BALANCE_NOT_ENOUGHT);
 
         event::emit_event(&mut current_info.amount_change_events, AmountWithdrawDepositEvent {
-        from_amount: current_amount,
-        to_amount: current_amount - (copy amount),
+            from_amount: current_amount,
+            to_amount: current_amount - (copy amount),
         });
         current_info.amount = current_info.amount - (copy amount);
 
