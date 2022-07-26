@@ -11,7 +11,7 @@ module vault::Vault{
     const INVALID_ADMIN: u64 = 6;
 
 	struct ManagedCoin {}
-	
+
 	struct VaultHolder has key {
 		vault: Coin::Coin<ManagedCoin>,
 		paused: bool
@@ -39,8 +39,8 @@ module vault::Vault{
 		let vault = Coin::zero<ManagedCoin>();
 		move_to(admin, VaultHolder {
 			vault,
-			paused: false		
-		});	
+			paused: false
+		});
 	}
 
 	public entry fun pause_vault(admin: &signer) acquires VaultHolder {
@@ -57,7 +57,7 @@ module vault::Vault{
 		old_vault_holder.paused = false;
 	}
 
-	public entry fun deposit(user: &signer, amount: u64, vault_account: address) acquires VaultHolder, UserInfo{		
+	public entry fun deposit(user: &signer, amount: u64, vault_account: address) acquires VaultHolder, UserInfo{
 		assert!(!*&borrow_global<VaultHolder>(vault_account).paused, VAULT_PAUSED);
 
         let addr = signer::address_of(user);
@@ -101,11 +101,7 @@ module vault::Vault{
         let vault_holder = borrow_global_mut<VaultHolder>(vault_account);
         let coins = Coin::extract<ManagedCoin>(&mut vault_holder.vault, amount);
         Coin::deposit<ManagedCoin>(addr, coins);
-    } 
-	
+    }
 
-	
 }
-	
-	
 
