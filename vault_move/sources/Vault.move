@@ -28,19 +28,19 @@ module vault::Vault{
 	}
 
     public entry fun init_vault(admin: &signer) {
-        let addr = signer::address_of(admin);
-        if (!Coin::is_account_registered<ManagedCoin>(addr)){
-        Coin::register<ManagedCoin>(admin);
-        };
+		let addr = signer::address_of(admin);
+		if (!Coin::is_account_registered<ManagedCoin>(addr)){
+			Coin::register<ManagedCoin>(admin);
+		};
 
-        assert!(Coin::is_account_registered<ManagedCoin>(addr), COIN_NOT_REGISTERED);
-        assert!(!exists<VaultHolder>(addr), VAULT_ALREADY_MOVED);
+		assert!(Coin::is_account_registered<ManagedCoin>(addr), COIN_NOT_REGISTERED);
+		assert!(!exists<VaultHolder>(addr), VAULT_ALREADY_MOVED);
 
-        let vault = Coin::zero<ManagedCoin>();
-        move_to(admin, VaultHolder {
-        vault,
-        paused: false
-        });
+		let vault = Coin::zero<ManagedCoin>();
+		move_to(admin, VaultHolder {
+			vault,
+			paused: false
+		});
     }
 
 	public entry fun pause_vault(admin: &signer) acquires VaultHolder {
@@ -64,9 +64,9 @@ module vault::Vault{
         assert!(Coin::is_account_registered<ManagedCoin>(addr), COIN_NOT_REGISTERED);
         if (!exists<UserInfo>(addr)) {
             move_to(user, UserInfo {
-            amount: (copy amount),
-            amount_change_events: event::new_event_handle<AmountWithdrawDepositEvent>(copy user),
-        });
+				amount: (copy amount),
+				amount_change_events: event::new_event_handle<AmountWithdrawDepositEvent>(copy user),
+        	});
         } else {
             let old_info = borrow_global_mut<UserInfo>(addr);
             let from_amount = *&old_info.amount;
